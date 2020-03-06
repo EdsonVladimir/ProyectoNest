@@ -14,48 +14,71 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
 const create_mensaje_dto_1 = require("./dto/create-mensaje-dto");
+const mensajes_service_1 = require("./mensajes.service");
 let MensajesController = class MensajesController {
-    create(createMensajeDto) {
-        return 'Mensaje creado';
+    constructor(mensajesService) {
+        this.mensajesService = mensajesService;
     }
-    getAll() {
-        return 'lista de mensajes';
+    create(createMensajeDto, response) {
+        this.mensajesService.createMensaje(createMensajeDto).then(mensaje => {
+            response.status(common_1.HttpStatus.CREATED).json(mensaje);
+        }).catch(() => {
+            response.status(common_1.HttpStatus.FORBIDDEN).json({ mensaje: 'error en la creacion del mensaje' });
+        });
     }
-    update(updateMensajeDto) {
-        return 'mensaje actualizado';
+    getAll(response) {
+        this.mensajesService.getAll().then(mensajesList => {
+            response.status(common_1.HttpStatus.OK).json(mensajesList);
+        }).catch(() => {
+            response.status(common_1.HttpStatus.FORBIDDEN).json({ mensaje: 'error en la creacion del mensajes' });
+        });
     }
-    delete() {
-        return 'mensaje eliminado';
+    update(updateMensajeDto, response, idMensaje) {
+        this.mensajesService.updateMensaje(idMensaje, updateMensajeDto).then(mensaje => {
+            response.status(common_1.HttpStatus.OK).json(mensaje);
+        }).catch(() => {
+            response.status(common_1.HttpStatus.FORBIDDEN).json({ mensaje: 'error en la creacion del mensajes' });
+        });
+    }
+    delete(response, idMensaje) {
+        this.mensajesService.deleteMensaje(idMensaje).then(res => {
+            response.status(common_1.HttpStatus.OK).json(res);
+        }).catch(() => {
+            response.status(common_1.HttpStatus.FORBIDDEN).json({ mensaje: 'error en la creacion del mensajes' });
+        });
     }
 };
 __decorate([
     common_1.Post(),
-    __param(0, common_1.Body()),
+    __param(0, common_1.Body()), __param(1, common_1.Res()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_mensaje_dto_1.CreateMensajeDto]),
+    __metadata("design:paramtypes", [create_mensaje_dto_1.CreateMensajeDto, Object]),
     __metadata("design:returntype", void 0)
 ], MensajesController.prototype, "create", null);
 __decorate([
     common_1.Get(),
+    __param(0, common_1.Res()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], MensajesController.prototype, "getAll", null);
 __decorate([
     common_1.Put(':id'),
-    __param(0, common_1.Body()),
+    __param(0, common_1.Body()), __param(1, common_1.Res()), __param(2, common_1.Param('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_mensaje_dto_1.CreateMensajeDto]),
+    __metadata("design:paramtypes", [create_mensaje_dto_1.CreateMensajeDto, Object, Object]),
     __metadata("design:returntype", void 0)
 ], MensajesController.prototype, "update", null);
 __decorate([
     common_1.Delete(':id'),
+    __param(0, common_1.Res()), __param(1, common_1.Param('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", void 0)
 ], MensajesController.prototype, "delete", null);
 MensajesController = __decorate([
-    common_1.Controller('mensajes')
+    common_1.Controller('mensajes'),
+    __metadata("design:paramtypes", [mensajes_service_1.MensajesService])
 ], MensajesController);
 exports.MensajesController = MensajesController;
 //# sourceMappingURL=mensajes.controller.js.map

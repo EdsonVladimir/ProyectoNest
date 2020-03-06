@@ -4,21 +4,23 @@ import { AppService } from './app.service';
 import { MensajesController } from './mensajes/mensajes.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Mensaje } from './mensajes/entities/mensaje.entity';
+import { MensajesService } from './mensajes/mensajes.service';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
-      port: 8889,
-      username: 'nest',
-      password: 'app',
-      database: 'sendmeapp_db',
+      port: 3306,
+      username: 'root',
+      password: 'E159654Sosa',
+      database: 'sendmeapp',
       entities: [Mensaje],
       synchronize: true,
     }),
+    TypeOrmModule.forFeature([Mensaje])
   ],
   controllers: [AppController, MensajesController],
-  providers: [AppService],
+  providers: [AppService, MensajesService],
 })
 export class AppModule {}

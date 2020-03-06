@@ -1,7 +1,10 @@
 import { CreateMensajeDto } from './dto/create-mensaje-dto';
+import { MensajesService } from './mensajes.service';
 export declare class MensajesController {
-    create(createMensajeDto: CreateMensajeDto): string;
-    getAll(): string;
-    update(updateMensajeDto: CreateMensajeDto): string;
-    delete(): string;
+    private mensajesService;
+    constructor(mensajesService: MensajesService);
+    create(createMensajeDto: CreateMensajeDto, response: any): void;
+    getAll(response: any): void;
+    update(updateMensajeDto: CreateMensajeDto, response: any, idMensaje: any): void;
+    delete(response: any, idMensaje: any): void;
 }
